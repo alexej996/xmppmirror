@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+# XMPP bot that mirrors chat between two MUC rooms
+import argparse
+import slixmpp
+
+JID='bot_username@example.org'
+PASSWORD='bot_password'
+NICK = 'mirrorbot'
+ROOM1 = 'room1_jid@example1.org'
+ROOM2 = 'room2_jid@example2.org'
+
+VERSION='0.1.0'
+
+class MUCBot(slixmpp.ClientXMPP):
+
+    def __init__(self, jid, password, nick, room1, room2):
+        slixmpp.ClientXMPP.__init__(self, jid, password)
+
+        self.nick = nick
+        self.room1 = room1
+        self.room2 = room2
+        self.add_event_handler("session_start", self.start)
+        self.add_event_handler("groupchat_message", self.muc_message)
+
+    async def start(self, event):
+        await self.get_roster()
+        self.send_presence()
+        self.plugin['xep_0045'].join_muc(self.room1,self.nick)
+        self.plugin['xep_0045'].join_muc(self.room2,self.nick)
+
+    def muc_message(self, msg):
+        rcpt=msg['from'].bare
+        if self.room1 in str(msg['from']):
+            rcpt=self.room2
+        if self.room2 in str(msg['from']):
+            rcpt=self.room1
+        if msg['mucnick'] != self.nick:
+            self.send_message(mto=rcpt,mbody="%s: %s" % (msg['mucnick'],msg['body']),mtype='groupchat')
+
+
+if __name__ == '__main__':
+    argparser = argparse.ArgumentParser(description="XMPP bot that mirrors chat between two MUC rooms")
+    argparser.add_argument("--version", dest="version", help="print version information and exit", action="store_true")
+    args=argparser.parse_args()
+
+    ## Version argument
+    if args.version:
+        print("XMPPmirror " + VERSION)
+        print("License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>")
+        print("This is free software: you are free to change and redistribute it.")
+        print("There is NO WARRANTY, to the extent permitted by law.")
+        exit()
+
+
+    xmpp = MUCBot(JID, PASSWORD, NICK, ROOM1, ROOM2)
+    xmpp.register_plugin('xep_0030') # Service Discovery
+    xmpp.register_plugin('xep_0045') # Multi-User Chat
+    xmpp.register_plugin('xep_0199') # XMPP Ping
+
+    # Connect to the XMPP server and start processing XMPP stanzas.
+    xmpp.connect()
+    xmpp.process()
+
