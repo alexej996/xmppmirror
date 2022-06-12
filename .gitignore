@@ -1,0 +1,8 @@
+venv/
+*.swp
+*.pyc
+build/
+dist/
+_pycache__/
+*.py[cod]
+
