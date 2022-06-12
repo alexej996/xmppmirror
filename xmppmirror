@@ -2,12 +2,9 @@
 # XMPP bot that mirrors chat between two MUC rooms
 import argparse
 import slixmpp
+import configparser
 
-JID='bot_username@example.org'
-PASSWORD='bot_password'
-NICK = 'mirrorbot'
-ROOM1 = 'room1_jid@example1.org'
-ROOM2 = 'room2_jid@example2.org'
+CONFIG_PATH = "./config.ini"
 
 VERSION='0.1.0'
 
@@ -50,6 +47,14 @@ if __name__ == '__main__':
         print("This is free software: you are free to change and redistribute it.")
         print("There is NO WARRANTY, to the extent permitted by law.")
         exit()
+
+    config = configparser.ConfigParser()
+    config.read(CONFIG_PATH)
+    JID = config.get('credentials', 'JID')
+    PASSWORD = config.get('credentials', 'PASSWORD')
+    NICK = config.get('credentials', 'NICK')
+    ROOM1 = config.get('credentials', 'ROOM1')
+    ROOM2 = config.get('credentials', 'ROOM2')
 
 
     xmpp = MUCBot(JID, PASSWORD, NICK, ROOM1, ROOM2)
