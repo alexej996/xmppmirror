@@ -8,6 +8,13 @@ CONFIG_PATH = "./config.ini"
 
 VERSION='0.1.0'
 
+def show_version():
+        print("XMPPmirror " + VERSION)
+        print("License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>")
+        print("This is free software: you are free to change and redistribute it.")
+        print("There is NO WARRANTY, to the extent permitted by law.")
+
+
 class MUCBot(slixmpp.ClientXMPP):
 
     def __init__(self, jid, password, nick, room1, room2):
@@ -42,10 +49,7 @@ if __name__ == '__main__':
 
     ## Version argument
     if args.version:
-        print("XMPPmirror " + VERSION)
-        print("License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>")
-        print("This is free software: you are free to change and redistribute it.")
-        print("There is NO WARRANTY, to the extent permitted by law.")
+        show_version()
         exit()
 
     config = configparser.ConfigParser()
