@@ -39,12 +39,12 @@ def printandexit():
     print("Results of test:")
     for i in results1:
         if i[2] == 0:
-            print(i[0] + " : Not recieved)
+            print(i[0] + " : Not recieved")
         else:
             print(i[0].rstrip() + " : " + str(round(i[2]-i[1],2)) + " secounds")
     for i in results2:
         if i[2] == 0:
-            print(i[0] + " : Not recieved)
+            print(i[0] + " : Not recieved")
         else:
             print(i[0].rstrip() + " : " + str(round(i[2]-i[1],2)) + " secounds")
     exit()
