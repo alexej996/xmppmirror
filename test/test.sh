@@ -24,11 +24,11 @@ python3 testbot & TESTBOTPID=$!
 sleep 10
 
 # Wait certain amount of time for every test message in the file
-for i in $(cat testmsgs); do sleep 5; done
+for i in $(cat testmsgs.txt); do sleep 5; done
 
 # Kill bots
-kill XMPPMIRRORPID
-kill TESTBOTPID
+kill $XMPPMIRRORPID
+kill $TESTBOTPID
 
 # Stop and remove containter
 docker stop xmppbot-test
