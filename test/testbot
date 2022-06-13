@@ -3,6 +3,7 @@
 import argparse
 import slixmpp
 import configparser
+import time
 
 CONFIG_PATH = "./testconfig.ini"
 
@@ -31,14 +32,21 @@ def allmsgsrecv():
     for i in results2:
         if i[2] == 0:
             return False
+    return ret
 
 # Print results and exit
 def printandexit():
     print("Results of test:")
     for i in results1:
-        print(i[0].rstrip + " : " + str(round(i[2]-i[1],2)) + " secounds")
+        if i[2] == 0:
+            print(i[0] + " : Not recieved)
+        else:
+            print(i[0].rstrip() + " : " + str(round(i[2]-i[1],2)) + " secounds")
     for i in results2:
-        print(i[0].rstrip + " : " + str(round(i[2]-i[1],2)) + " secounds")
+        if i[2] == 0:
+            print(i[0] + " : Not recieved)
+        else:
+            print(i[0].rstrip() + " : " + str(round(i[2]-i[1],2)) + " secounds")
     exit()
 
 def show_version():
@@ -93,7 +101,7 @@ class MUCBot(slixmpp.ClientXMPP):
                 if i[0] == body:
                     i[2] = rtime
 
-        if allmsgsrecv:
+        if allmsgsrecv() is True:
             printandexit()
 
 
