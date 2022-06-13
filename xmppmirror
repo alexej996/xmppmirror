@@ -59,6 +59,12 @@ if __name__ == '__main__':
     NICK = config.get('credentials', 'NICK')
     ROOM1 = config.get('credentials', 'ROOM1')
     ROOM2 = config.get('credentials', 'ROOM2')
+    HOST = None
+    PORT = 5222
+    if "host" in config.options('credentials'):
+        HOST = config.get('credentials', 'HOST')
+    if "port" in config.options('credentials'):
+        PORT = config.get('credentials', 'PORT')
 
 
     xmpp = MUCBot(JID, PASSWORD, NICK, ROOM1, ROOM2)
@@ -67,6 +73,9 @@ if __name__ == '__main__':
     xmpp.register_plugin('xep_0199') # XMPP Ping
 
     # Connect to the XMPP server and start processing XMPP stanzas.
-    xmpp.connect()
+    if HOST != None:
+        xmpp.connect(address=(HOST,int(PORT)))
+    else:
+        xmpp.connect()
     xmpp.process()
 
