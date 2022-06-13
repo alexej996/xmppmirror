@@ -130,6 +130,6 @@ if __name__ == '__main__':
     xmpp.register_plugin('xep_0199') # XMPP Ping
 
     # Connect to the XMPP server and start processing XMPP stanzas.
-    xmpp.connect(address=("localhost",25222))
+    xmpp.connect(address=("127.0.0.1",25222))
     xmpp.process(forever=False)
 
