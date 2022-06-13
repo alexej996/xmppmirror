@@ -15,10 +15,20 @@ docker exec -it xmppbot-test bin/ejabberdctl create_room testroom1 conference.lo
 docker exec -it xmppbot-test bin/ejabberdctl create_room testroom2 conference.localhost localhost
 
 # Run xmpp mirror bot
-python3 ../xmppmirror &
+python3 ../xmppmirror & XMPPMIRRORPID=$!
 
 # Run xmpp test bot
-python3 testbot
+python3 testbot & TESTBOTPID=$!
+
+# Wait for bots to connect
+sleep 10
+
+# Wait certain amount of time for every test message in the file
+for i in $(cat testmsgs); do sleep 5; done
+
+# Kill bots
+kill XMPPMIRRORPID
+kill TESTBOTPID
 
 # Stop and remove containter
 docker stop xmppbot-test
