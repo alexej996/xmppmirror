@@ -3,7 +3,7 @@
 if ! command -v docker run &> /dev/null
 then
     echo "No docker detected. If you are running debian based system, you can install docker with"
-    echo "sudo apt install docker.io
+    echo "sudo apt install docker.io"
     exit
 fi
 
