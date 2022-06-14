@@ -97,13 +97,13 @@ class MUCBot(slixmpp.ClientXMPP):
         unknownmsg = True
         if self.room1 in str(msg['from']):
             for i in results2:
-                if 'xmppbot: ' + i[0] == body:
+                if "admin: " + i[0] == body:
                     i[2] = rtime
                     unknownmsg = False
 
         if self.room2 in str(msg['from']):
             for i in results1:
-                if 'xmppbot: ' + i[0] == body:
+                if "admin: " + i[0] == body:
                     i[2] = rtime
                     unknownmsg = False
 
