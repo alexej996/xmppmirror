@@ -91,17 +91,24 @@ class MUCBot(slixmpp.ClientXMPP):
 
     def muc_message(self, msg):
         rtime=time.time()
-        rcpt=msg['from'].bare
+        if msg['mucnick'] == self.nick:
+            return
         body="%(body)s" % msg
+        unknownmsg = True
         if self.room1 in str(msg['from']):
             for i in results2:
-                if i[0] == body:
+                if 'xmppbot: ' + i[0] == body:
                     i[2] = rtime
+                    unknownmsg = False
 
         if self.room2 in str(msg['from']):
             for i in results1:
-                if i[0] == body:
+                if 'xmppbot: ' + i[0] == body:
                     i[2] = rtime
+                    unknownmsg = False
+
+        if unknownmsg:
+            print("Unknown message recieved: " + body)
 
         if allmsgsrecv() is True:
             printandexit()
